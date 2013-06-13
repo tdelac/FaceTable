@@ -1,0 +1,30 @@
+body {
+	background-color: #BBBBBB;
+}
+
+h1 {
+	font-family: verdana, arial, sans-serif;
+	font-size: 20px;
+	font-weight: 400;
+	text-align: left;
+	margin-bottom: 10px;
+}
+
+p {
+	font-family: verdana, arial, sans-serif;
+	font-size: 14px;
+	font-weight: 400;
+	text-indent: 30px;
+	margin-top: 0px;
+	margin-bottom: 5px;
+	width: 500px;
+}
+
+.name {
+	font-family: verdana, arial, sans-serif;
+	font-size: 12px;
+	font-style: italic;
+	text-indent: 60px;
+	margin-top: 0px;
+	margin-bottom: 50px;
+}

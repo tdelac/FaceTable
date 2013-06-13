@@ -1,0 +1,120 @@
+body {
+	background-color: #000000;
+	background-image: url("../imgs/FaceTableHeader.jpg");
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: 0% 0%;
+	font-family: arial, verdana, sans-serif;
+	font-Size: 16px;
+}
+h1 {
+	color: #000000;
+	font-family: verdana, arial, sans-serif;
+	font-size: 44px;
+	font-weight: 500;
+	text-shadow: -2.0em 0.0em rgba(200,200,200,0.5), 2.0em 0.0em rgba(230,230,230,0.15);
+	letter-spacing: 10px;
+	text-align: right;
+	border-bottom-width: thin;
+	border-bottom-style: solid;
+	border-bottom-color: #000000
+	margin-bottom: 0;
+}
+table {
+	float: top;
+	margin-top: 0;
+	position: absolute;
+	top: 59px;
+	left: 15px;
+	cursor: hand; cursor: pointer;
+}
+a {
+	margin-top: 0px;
+	padding-top: 0px;
+	text-decoration: none;
+}
+
+form {
+	font-family: verdana, arial, sans-serif;
+}
+
+#About {
+	width: 60px;
+}
+
+#ServicesO {
+        width: 80px;
+}
+
+#Menus {
+        width: 115px;
+}
+
+#Blog {
+       width: 50px;
+}
+
+#PhotoA {
+       width: 110px;
+}
+
+#ContactU {
+       width: 60px;
+}
+
+#Connect {
+       width: 77px;
+}
+
+#blank {
+       width: 270px;
+       cursor: default;
+}
+
+#login {
+       width: 77px;
+       position: absolute;
+       top: 43px;
+       left: 850px;
+}
+
+#welcome {
+	position: absolute;
+	top: 62px;
+	left: 780px;
+	font-family: verdana, arial, sans-serif;
+	font-size: 16px;
+	color: #BBBBBB;
+}
+
+#loginform {
+	background-color: #BBBBBB;
+	margin: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 8px;
+	padding-right: 5px;
+	position: absolute;
+	top: 283px;
+	left: 15px;
+}
+
+#registerform {
+	background-color: #BBBBBB;
+	margin: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 8px;
+	padding-right: 5px;
+	position: absolute;
+	top: 283px;
+	left: 360px;
+}
+
+p {
+	color: #BBBBBB
+}
+p:hover {
+	letter-spacing: 5px;
+	color: #FFFFFF
+}
