@@ -11,7 +11,7 @@ if (isset($_SESSION['prenom'])){
 <link rel="stylesheet" type="text/css" href="style/stylesheet.css" />
 </head>
 <body>
-<h1>$first $second&nbsp&nbsp</h1>
+<h1>Blogs&nbsp&nbsp&nbsp&nbsp</h1>
 <table>
 <tr>
 <td id="home">

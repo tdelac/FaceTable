@@ -1,9 +1,9 @@
 body {
-	background-color: #000000;
+	background-color: #000;
 	background-image: url("../imgs/FaceTableHeader.jpg");
 	background-repeat: no-repeat;
-	background-attachment: fixed;
 	background-position: 0% 0%;
+	background-attachment: scroll;
 	font-family: arial, verdana, sans-serif;
 	font-Size: 16px;
 }
@@ -19,6 +19,12 @@ h1 {
 	border-bottom-style: solid;
 	border-bottom-color: #000000
 	margin-bottom: 0;
+}
+h2 {
+	color: #000000;
+}
+h3 {
+	color: #BBBBBB;
 }
 table {
 	float: top;
@@ -111,10 +117,51 @@ form {
 	left: 360px;
 }
 
+#home {
+	width: 60px;
+}
+#profile {
+	width: 80px;
+}
+#find {
+	width: 180px;
+}
 p {
 	color: #BBBBBB
 }
 p:hover {
 	letter-spacing: 5px;
 	color: #FFFFFF
+}
+p.profile {
+	color: #BBBBBB;
+}
+div.notheader {
+	position: absolute;
+	top: 150px;
+	left: 10px;
+	background-color: rgba(200, 200, 200, .7);
+	clear: both;
+	padding-left: 5px;
+	padding-right: 25px;
+}
+div.imgs {
+	width: 200px;
+	margin-left: 15px;
+	position: absolute;
+	left: 650px;
+	clear: both;
+}
+div.body {
+	position: absolute;
+	top: 100px;
+	margin: 15px;
+	width: 600px;
+	clear: both;
+}
+img.sidebar {
+	display: block;
+}
+span.parens {
+	font-size: 14px;
 }

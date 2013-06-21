@@ -3,18 +3,10 @@ include_once 'header.php';
 require_once 'login.php';
 require_once 'functions.php';
 
-if (!isset($_SESSION['prenom'])) die("Please login to view this page");
 $email = $_SESSION['email'];
 $prenom = $_SESSION['prenom'];
 $surname = $_SESSION['surname'];
-
-echo <<<_END
-<html>
-  <head>
-    <title>Welcome, $prenom</title>
-    <link rel="stylesheet" type="text/css" href="style/profilestyle.css" />
-  </head>
-_END;
+$url = 'profile.php';
 
 $db_server = mysql_connect($db_hostname, $db_username, $db_password);
 if (!$db_server) die("unable to connect to mysql");
@@ -32,24 +24,25 @@ if (isset($_POST['text'])){
 		mysql_query("INSERT INTO profiles VALUES('$email','$text')");
 	}
 }
-else {
-	$result = mysql_query("SELECT * FROM profiles WHERE email='$email'");
-	if (mysql_num_rows($result)){
-		$row = mysql_fetch_row($result);
-		$text = $row[1];
-	}
-	else $text = "";
+if (isset($_GET['blogremove'])){
+	$table = removePeriodsAndAt($email) . "blogs";
+	$id = $_GET['blogremove'];
+	$result = mysql_query("SELECT * FROM $table WHERE id=$id");
+	$row = mysql_fetch_row($result);
+	$title = $row[2];
+	$blogtable = removePeriodsAndAt($email) . removeSpaces($title);
+	mysql_query("DELETE FROM $table WHERE id=$id");
+	mysql_query("DELETE FROM allblogs WHERE title=$title AND 
+	email=$email");
+	mysql_query("DROP TABLE $blogtable");
 }
-if (isset($_GET['removeblog'])){
-	$title = $_GET['removeblog'];
-	$table = $email . "blogs";
-	mysql_query("DELETE FROM $table WHERE title='$title'");
-	mysql_query("DELETE FROM blogs WHERE title='$title . $prenom . $surname'");
-}
-if (isset($_POST['img'])){
-	$imagenum = $_POST['img'];
+if (isset($_GET['img'])){
+	$imagenum = $_GET['img'];
 
 	if (isset($_FILES['image']['name'])){
+		if (file_exists("imgs/$email/$imagenum.jpg")){
+			unlink("imgs/$email/$imagenum.jpg");
+		}
 		$path = "imgs/$email/$imagenum.jpg";
 		move_uploaded_file($_FILES['image']['tmp_name'], $path);
 		$typeok = TRUE;
@@ -67,7 +60,7 @@ if (isset($_POST['img'])){
 		}
 		if ($typeok){
 			list($w, $h) = getimagesize($path);
-			$max = 150;
+			$max = 200;
 			$nw = $w;
 			$nh = $h;
 
@@ -88,29 +81,5 @@ if (isset($_POST['img'])){
 		}
 	}
 }	
-if (isset($_GET['edit'])){
-	echo <<<_END
-<form action="profile.php" method="post" enctype="multipart/form-data"><pre>
-Select a picture to replace 
-(numbered from top to bottom)<select name="img" size="1">
-			     <option value="1">1</option>
-			     <option value="2">2</option>
-			     <option value="3">3</option>
-			     <option value="4">4</option>
-			     <option value="5">5</option>
-			     <option value="6">6</option>
-			     <option value="7">7</option>
-			     </select>
-Image:	    		     <input type="file" name="image" size="14" maxlength="32"i />
-			     <textarea name="text" cols="50" rows="7" wrap="hard">
-$text
-			     </textarea>
-			     <input type="submit" value="SAVE CHANGES" />
-</pre></form>
-_END;
-}
-else {
-echo "<a href='profile.php?edit=yes'>edit</a>";
-}
-showprofile($email);
+showprofile($email, $url);
 ?>

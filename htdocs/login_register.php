@@ -90,9 +90,8 @@ if (isset($_POST['regPrenom']) &&
 	if (!mysql_query($query, $db_server))
 		echo "INSERT FAILED: $query<br />" .
 		mysql_error();
-	$sqlname = echo "$email" | sed 's/.//';
-	$sqlname = echo "$sqlname" | sed 's/@//';
-	$query = "CREATE TABLE  (id MEDIUMINT NOT NULL AUTO_INCREMENT, time INT NOT NULL, 
+	$sqlname = removePeriodsAndAt($email) . 'blogs';
+	$query = "CREATE TABLE $sqlname (id MEDIUMINT NOT NULL AUTO_INCREMENT, time INT NOT NULL, 
 		title VARCHAR(300) NOT NULL, PRIMARY KEY(id));";
 	if (!mysql_query($query, $db_server))
 		echo "INSERT FAILED: $query<br />" . 
