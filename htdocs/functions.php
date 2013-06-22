@@ -135,12 +135,65 @@ _END;
 	echo "</div>";
 	echo "</div>";
 }
+function showblog($title, $author, $url){
+	$result = mysql_query("SELECT * FROM allblogs WHERE title='$title'
+	AND author='$author'");
+	$row = mysql_fetch_row($result);
+	$email = $row[5];
+	$table = removePeriodsAndAt($email) . removeSpaces($title);
+	$result = mysql_query("SELECT * FROM $table ORDER BY id DESC");
+	echo <<<_END
+<div class='notheader'>
+<h2>$title</h2>
+_END;
+	$useremail = $_SESSION['email'];
+		
+	for ($i = 0; $i < mysql_num_rows($result); $i++){
+		$row = mysql_fetch_row($result);
+		$blog = $row[0];
+		$id = $row[1];
+		$editurl = $url . "&editid=$id";
+		$removeurl = $url . "&removeid=$id";
+		echo "<p class='blog'>$blog";
+		if ($email == $useremail){
+			echo "<span class='parens'> (<a href='$editurl'>edit
+			</a>|<a href='$removeurl'>remove</a>)</span></p>";
+		}
+	}
+	if ($email == $useremail){
+			echo <<<_END
+<div class='blogaction'>
+<form action='$url' method='post'>
+<input type='hidden' name='edittitle' value='blank' />
+<input type='submit' value='EDIT' />
+</form>
+<form action='$url' method='post'>
+<input type='hidden' name='post' value='blank' />
+<input type='submit' value='NEW POST' />
+</form>
+</div>
+_END;
+	}
+	else {
+		echo "</p>";
+		echo <<<_END
+<div class='blogaction'>
+<form action=$url method='post>
+<input type='hidden' name='follow' value=$useremail />
+<input type='sumbit' value='FOLLOW' />
+</form>
+</div>
+_END;
+	}
+	echo "</div>";
+}
 function removePeriodsAndAt($string){
 	$string = preg_replace('/\./','',$string);
 	$string = preg_replace('/@/','',$string);
 	return $string;
 }
-function removeSpaces($string({
+function removeSpaces($string){
 	$string = str_replace(' ', '', $string);
+	return $string;
 }
 ?>
