@@ -117,8 +117,11 @@ _END;
 		$numrows = mysql_num_rows($result) > 2 ? 3 : mysql_num_rows($result);
 		echo "<a href='$url?blog=viewall'> (view)</a>";
 	}
-	if ($email == $_SESSION['email'])
-		echo "<a href='$url?edit=blogs'> (edit)</a></h3>";
+	if ($email == $_SESSION['email']){
+		echo "<a href='$url?edit=blogs'> (edit)</a>";
+		echo "<a href='$url?new=blogs'> (New Blog)</a></h3>";
+	}
+	else echo "</h3>";
 	if (isset($_GET['edit'])){
 		if ($_GET['edit'] == 'blogs'){
 			for ($i = mysql_num_rows($result); $i > 0; $i--){
@@ -126,6 +129,16 @@ _END;
 				echo "<p class='profile'>$row[2]
 				<a href='$url?blogremove=$row[0]'> remove</a></p>";
 				}
+		}
+	}
+	if (isset($_GET['new'])){
+		if ($_GET['new'] == 'blogs'){
+			echo <<<_END
+<form action='$url' method='post'>
+Blog Title <input type='text' name='newtitle' maxlength='300' />
+<input type='submit' value='CREATE' />
+</form>
+_END;
 		}
 	}
 	for ($i = $numrows; $i > 0; $i--){
@@ -136,6 +149,7 @@ _END;
 	echo "</div>";
 }
 function showblog($title, $author, $url){
+	echo $title;
 	$result = mysql_query("SELECT * FROM allblogs WHERE title='$title'
 	AND author='$author'");
 	$row = mysql_fetch_row($result);

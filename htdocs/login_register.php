@@ -91,11 +91,14 @@ if (isset($_POST['regPrenom']) &&
 		echo "INSERT FAILED: $query<br />" .
 		mysql_error();
 	$sqlname = removePeriodsAndAt($email) . 'blogs';
+	$guesttable = removePeriodsAndAt($email) . 'guests';
 	$query = "CREATE TABLE $sqlname (id MEDIUMINT NOT NULL AUTO_INCREMENT, time INT NOT NULL, 
-		title VARCHAR(300) NOT NULL, PRIMARY KEY(id));";
+		title VARCHAR(300) NOT NULL, followers INT UNSIGNED NOT NULL, PRIMARY KEY(id));";
 	if (!mysql_query($query, $db_server))
 		echo "INSERT FAILED: $query<br />" . 
 		mysql_error();
+	mysql_query("CREATE TABLE $guesttable (id INT UNSIGNED NOT NULL,
+	status VARCHAR(5) NOT NULL)");
 
 	mkdir("imgs/$email", 0755);
 }

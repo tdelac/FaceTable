@@ -12,8 +12,11 @@ mysql_select_db('users', $db_server) or die ('unable to open database');
 if (isset($_GET['title']) && isset($_GET['author'])){
 	$_title = $_GET['title'];
 	$title = str_replace('_', ' ', $_title);
-	$author = $_GET['author'];
-	$url = "blog.php?title=$_title&author=$author";
+	$result = mysql_query("SELECT * FROM allblogs WHERE title='$title'");
+	if (!$result) die ("Nice try. Stop messing with my GET variables.");
+	$_author = $_GET['author'];
+	$author = str_replace('_', ' ', $_author);
+	$url = "blog.php?title=$_title&author=$_author";
 	$result = mysql_query("SELECT * FROM allblogs WHERE title='$title'
 	AND author='$author'");
 	if (!$result) die ("could not select from table");
@@ -44,8 +47,8 @@ if (isset($_GET['title']) && isset($_GET['author'])){
 		mysql_query("RENAME TABLE $table TO $newtable");
 		mysql_query("UPDATE $userblogs SET title='$newtitle' 
 		WHERE title='$title'");
-		mysql_query("UPDATE allblogs SET title=$newtitle 
-		WHERE title=$title AND author=$author");
+		mysql_query("UPDATE allblogs SET title='$newtitle' 
+		WHERE title='$title' AND author='$author'");
 	}
 	if (isset($_POST['edittitle'])){
 		echo <<<_END
@@ -70,7 +73,7 @@ _END;
 	}
 	elseif (isset($_GET['editid'])){
 		$id = $_GET['editid'];
-		$result = mysql_query("SELECT * FROM $table WHERE id=$id");
+		$result = mysql_query("SELECT * FROM $table WHERE id='$id'");
 		$row = mysql_fetch_row($result);
 		$text = $row[0];
 		echo <<<_END

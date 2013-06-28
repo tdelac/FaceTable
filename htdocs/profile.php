@@ -12,6 +12,23 @@ $db_server = mysql_connect($db_hostname, $db_username, $db_password);
 if (!$db_server) die("unable to connect to mysql");
 mysql_select_db('users', $db_server) or die("unable to open database");
 
+if (isset($_GET['user'])){
+	$id = $_GET['user'];
+	$url = "profile.php?user=$id";
+	$result = mysql_query("SELECT * FROM registration WHERE id='$id'");
+	$row = mysql_fetch_row($result);
+	$useremail = $row[2];
+	if ($email != $useremail){
+		$table = removePeriodsAndAt($email) . "guests";
+		$result = mysql_query("SELECT * FROM $table WHERE id='$id'");
+		if ($result) showprofile($useremail, $url);
+		else {
+			echo "You must be mutual guests to see
+			this profile";
+		}
+	}
+}
+else { 
 if (isset($_POST['text'])){
 	$text = sanatize('text');
 	$query = "SELECT * FROM profiles WHERE email='$email'";
@@ -24,6 +41,20 @@ if (isset($_POST['text'])){
 		mysql_query("INSERT INTO profiles VALUES('$email','$text')");
 	}
 }
+if (isset($_POST['newtitle'])){
+	$newblog = sanatize('newtitle');
+	$newtable = removePeriodsAndAt($email) . removeSpaces($newblog);
+	$userblogs = removePeriodsAndAt($email) . "blogs";
+	$time = time();
+	mysql_query("CREATE TABLE $newtable (posts VARCHAR(65000) 
+	NOT NULL, id INT UNSIGNED NOT NULL AUTO_INCREMENT, PRIMARY KEY
+	(id))");
+	mysql_query("INSERT INTO $userblogs(time, title, followers)
+	VALUES('$time', '$newblog', '0')");
+	mysql_query("INSERT INTO allblogs(title, author, followerscount,
+	time, email) VALUES('$newblog', '$prenom $surname', '0', '$time',
+	'$email')");
+}
 if (isset($_GET['blogremove'])){
 	$table = removePeriodsAndAt($email) . "blogs";
 	$id = $_GET['blogremove'];
@@ -32,8 +63,8 @@ if (isset($_GET['blogremove'])){
 	$title = $row[2];
 	$blogtable = removePeriodsAndAt($email) . removeSpaces($title);
 	mysql_query("DELETE FROM $table WHERE id=$id");
-	mysql_query("DELETE FROM allblogs WHERE title=$title AND 
-	email=$email");
+	mysql_query("DELETE FROM allblogs WHERE title='$title' AND 
+	email='$email'");
 	mysql_query("DROP TABLE $blogtable");
 }
 if (isset($_GET['img'])){
@@ -82,4 +113,5 @@ if (isset($_GET['img'])){
 	}
 }	
 showprofile($email, $url);
+}
 ?>
