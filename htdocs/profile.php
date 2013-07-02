@@ -20,8 +20,10 @@ if (isset($_GET['user'])){
 	$useremail = $row[2];
 	if ($email != $useremail){
 		$table = removePeriodsAndAt($email) . "guests";
-		$result = mysql_query("SELECT * FROM $table WHERE id='$id'");
-		if ($result) showprofile($useremail, $url);
+		$result = mysql_query("SELECT * FROM $table WHERE id='$id' 
+		AND status='true'");
+		$row = mysql_fetch_row($result);
+		if (!empty($row)) showprofile($useremail, $url);
 		else {
 			echo "You must be mutual guests to see
 			this profile";
@@ -112,6 +114,31 @@ if (isset($_GET['img'])){
 		}
 	}
 }	
+if (isset($_GET['guestaccept'])){
+	$id = $_GET['guestaccept'];
+	$result = mysql_query("SELECT * FROM registration WHERE
+	id='$id'");
+	$row = mysql_fetch_row($result);
+	$guestemail = $row[2];
+	$theirguests = removePeriodsAndAt($guestemail) . "guests";
+	$myguests = removePeriodsAndAt($email) . "guests";
+	$result = mysql_query("UPDATE $myguests SET status='true' 
+	WHERE id='$id'");
+	if (!$result) die(mysql_error());
+	$result = mysql_query("SELECT * FROM registration WHERE 
+	email='$email'");
+	$row = mysql_fetch_row($result);
+	$id = $row[5];
+	$result = mysql_query("INSERT INTO $theirguests (id, status)
+	VALUES ('$id', 'true')");
+	if (!$result) die(mysql_error());
+}
+if (isset($_GET['guestdecline'])){
+	$id = $_GET['guestdecline'];
+	$myguests = removePeriodsAndAt($email) . "guests";
+	$result = mysql_query("DELETE FROM $myguests WHERE
+	id='$id'");
+}
 showprofile($email, $url);
 }
 ?>

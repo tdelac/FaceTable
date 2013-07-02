@@ -95,6 +95,7 @@ _END;
 	echo "<h2><b>About me</b>";
 	if ($email == $_SESSION['email'])
 		echo "<a href='$url?edit=about'> (edit)</a></h2>";
+	else echo "</h2>";
 	echo "<p class='profile'>$text</p>";
 	if (isset($_GET['edit'])){
 		if ($_GET['edit'] == 'about'){
@@ -145,11 +146,37 @@ _END;
 		$row = mysql_fetch_row($result);
 		echo "<p class='profile'>$row[2]</p>";
 	}
+	if ($email == $_SESSION['email']){
+		echo "<h4><b>Guest Requests</b>";
+		if (isset($_GET['guestreq'])){
+			echo "<a href='$url'> (Hide)</a></h4>";
+			$myguests = removePeriodsAndAt($email) . "guests";
+			$result = mysql_query("SELECT * FROM $myguests WHERE 
+			status='false'");
+			$numrows = mysql_num_rows($result);
+			for ($i = 0; $i < $numrows; $i++){
+				$row = mysql_fetch_row($result);
+				$id = $row[0];
+				$result = mysql_query("SELECT * FROM registration 
+				WHERE id='$id'");
+				$row = mysql_fetch_row($result);
+				$prenom = $row[0];
+				$surname = $row[1];
+				echo "<p><a href='profile.php?user=$id'>$prenom 
+				$surname</a> (<a href='$url?guestaccept=$id'>
+				accept</a> | <a href='$url?guestdecline=$id'>
+				decline</a>) ";
+			}
+			echo "</p>";
+		}
+		else {
+			echo "<a href='$url?guestreq=view'> (View)</a></h4>";
+		}
+	}
 	echo "</div>";
 	echo "</div>";
 }
 function showblog($title, $author, $url){
-	echo $title;
 	$result = mysql_query("SELECT * FROM allblogs WHERE title='$title'
 	AND author='$author'");
 	$row = mysql_fetch_row($result);

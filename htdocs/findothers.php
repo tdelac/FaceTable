@@ -38,17 +38,20 @@ if (isset($_POST['search'])){
 			$table = removePeriodsAndAt($email) . "guests";
 			$result1 = mysql_query("SELECT * FROM $table WHERE 
 			id='$id' AND status='true'");
-			if ($result1) {
+			$row = mysql_fetch_row($result1);
+			if (!empty($row)) {
 				$value1 = "Un-Guest";
+				$value2 = "unguest";
 			}
 			else {
 				$value1 = "Send Guest Request";
+				$value2 = "sendguestreq";
 			}
 			echo <<<_END
 <a href='profile.php?user=$id'><img src='imgs/$useremail/1.jpg'></a> 
 <div class='gueststatus'>
 <form action='findothers.php' method='post'>
-<input type='hidden' name='$value1' value='$id' />
+<input type='hidden' name='$value2' value='$id' />
 <input type='submit' value='$value1' />
 </form>
 </div>
@@ -61,19 +64,19 @@ _END;
 		}
 	}
 }
-if (isset($_POST['Send Guest Request']) || isset($_POST['Un-Guest'])){
-	$id = isset($_POST['Send Guest Request']) ? sanatize('Send Guest 
-	Request') : sanatize('Un-Guest');
+if (isset($_POST['sendguestreq']) || isset($_POST['unguest'])){
+	$id = isset($_POST['sendguestreq']) ? sanatize('sendguestreq') 
+	: sanatize('unguest');
 	$result = mysql_query("SELECT * FROM registration WHERE id='$id'");
 	$row = mysql_fetch_row($result);
 	$useremail = $row[2];
-	$guesttable = $useremail . "guests";
-	$myguests = $email . "guests";
+	$guesttable = removePeriodsAndAt($useremail) . "guests";
+	$myguests = removePeriodsAndAt($email) . "guests";
 	$result = mysql_query("SELECT * FROM registration WHERE email=
 	'$email'");
 	$row = mysql_fetch_row($result);
 	$id1 = $row[5];
-	if (isset($_POST['Send Guest Request'])){
+	if (isset($_POST['sendguestreq'])){
 		$result = mysql_query("INSERT INTO $guesttable(id, status) 
 		VALUES('$id1', 'false')");
 		if (!$result) die(mysql_error());
