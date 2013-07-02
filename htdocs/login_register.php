@@ -92,13 +92,18 @@ if (isset($_POST['regPrenom']) &&
 		mysql_error();
 	$sqlname = removePeriodsAndAt($email) . 'blogs';
 	$guesttable = removePeriodsAndAt($email) . 'guests';
+	$followtable = removePeriodsAndAt($email) . 'following';
 	$query = "CREATE TABLE $sqlname (id MEDIUMINT NOT NULL AUTO_INCREMENT, time INT NOT NULL, 
-		title VARCHAR(300) NOT NULL, followers INT UNSIGNED NOT NULL, PRIMARY KEY(id));";
+		title VARCHAR(300) NOT NULL, followers VARCHAR(65000), PRIMARY KEY(id));";
 	if (!mysql_query($query, $db_server))
 		echo "INSERT FAILED: $query<br />" . 
 		mysql_error();
 	mysql_query("CREATE TABLE $guesttable (id INT UNSIGNED NOT NULL,
 	status VARCHAR(5) NOT NULL)");
+	$result = mysql_query("CREATE TABLE $followtable (author VARCHAR(50) NOT NULL,
+	title VARCHAR(300) NOT NULL, id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY(id))");
+	if (!$result) die(mysql_error());
 
 	mkdir("imgs/$email", 0755);
 }

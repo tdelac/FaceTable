@@ -51,8 +51,8 @@ if (isset($_POST['newtitle'])){
 	mysql_query("CREATE TABLE $newtable (posts VARCHAR(65000) 
 	NOT NULL, id INT UNSIGNED NOT NULL AUTO_INCREMENT, PRIMARY KEY
 	(id))");
-	mysql_query("INSERT INTO $userblogs(time, title, followers)
-	VALUES('$time', '$newblog', '0')");
+	mysql_query("INSERT INTO $userblogs(time, title)
+	VALUES('$time', '$newblog')");
 	mysql_query("INSERT INTO allblogs(title, author, followerscount,
 	time, email) VALUES('$newblog', '$prenom $surname', '0', '$time',
 	'$email')");

@@ -173,6 +173,30 @@ _END;
 			echo "<a href='$url?guestreq=view'> (View)</a></h4>";
 		}
 	}
+	echo "<h5><b>Guests</b><a href='guestsearch.php?user=$email'> 
+	(ViewAll)</a></h5>";
+	$guesttable = removePeriodsAndAt($email) . "guests";
+	$result = mysql_query("SELECT * FROM $guesttable WHERE status='true'
+	ORDER BY RAND() LIMIT 7");
+	for ($i = 0; $i < mysql_num_rows($result); $i++){
+		if ($i % 3 == 0){
+			echo "<p class='guestpics'>";
+		}
+		$row = mysql_fetch_row($result);
+		$id = $row[0];
+		$result1 = mysql_query("SELECT * FROM registration WHERE 
+		id='$id'");
+		$row = mysql_fetch_row($result1);
+		$prenom = $row[0];
+		$surname = $row[1];
+		$email = $row[2];
+		echo "<a href='profile.php?user=$id'><img class='guestpics' 
+		src='imgs/$email/1.jpg'></a>";
+		if ($i % 3 == 2){
+			echo "</p>";
+		}
+	}
+	echo "</p>";
 	echo "</div>";
 	echo "</div>";
 }
@@ -217,11 +241,23 @@ _END;
 	}
 	else {
 		echo "</p>";
+		$followingtable = removePeriodsAndAt($useremail) . "following";
+		$result = mysql_query("SELECT * FROM $followingtable
+		WHERE title='$title' AND author='$author'");
+		$row = mysql_fetch_row($result);
+		if (empty($row)){
+			$variable = "follow";
+			$variable1 = "FOLLOW";
+		}
+		else {
+			$variable = "unfollow";
+			$variable1 = "UN-FOLLOW";
+		}
 		echo <<<_END
 <div class='blogaction'>
-<form action=$url method='post>
-<input type='hidden' name='follow' value=$useremail />
-<input type='sumbit' value='FOLLOW' />
+<form action='$url' method='post>
+<input type='hidden' name='$variable' value=$useremail />
+<input type='sumbit' value='$variable1' />
 </form>
 </div>
 _END;

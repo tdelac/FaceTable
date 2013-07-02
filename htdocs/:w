@@ -50,19 +50,7 @@ if (isset($_GET['title']) && isset($_GET['author'])){
 		$blogstable = removePeriodsAndAt($email) . "blogs";
 		$followingtable = removePeriodsAndAt($useremail) . 
 		"following";
-		$result = mysql_query("DELETE FROM $followingtable
-		WHERE title='$title' AND author='$author'");
-		if (!$result) die(mysql_error());
-		$result = mysql_query("SELECT * FROM $blogstable
-		WHERE title='$title'");
-		$row = mysql_fetch_row($result);
-		$followers = $row[3];
-		$followarray = explode(",", $followers);
-		$key = array_search($useremail, $followarray);
-		array_splice($followarray, $key, 1);
-		$followers = implode(",", $followarray);
-		$result = mysql_query("UPDATE TABLE $blogstable
-		SET followers='$followers' WHERE title='$title'");
+		$result = 
 	}
 	if (isset($_POST['editid'])){
 		$id = sanatize('editid');
