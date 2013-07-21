@@ -1,7 +1,13 @@
 <?php
 require_once 'login.php';
 require_once 'functions.php';
-include_once 'blogheader.php';
+
+session_start();
+
+$h1 = "BLOG&nbsp&nbsp";
+$tabs = array("HOME", "PROFILE", "BLOG", "FIND OTHERS");
+$links = array("index.php", "profile.php", "bloghome.php", "findothers.php");
+head($h1, $tabs, $links);
 
 if (!isset($_SESSION['prenom'])) die ("please login to view this page");
 

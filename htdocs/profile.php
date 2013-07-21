@@ -1,8 +1,19 @@
 <?php
-include_once 'header.php';
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma: no-cache');
+header('Expires: 0');
 require_once 'login.php';
 require_once 'functions.php';
 
+session_start();
+
+if (!isset($_SESSION['prenom'])){
+	echo <<<_END
+You must <a href='login_regis
+ter.php'>login or register</a> to view this page
+_END;
+}
+else {
 $email = $_SESSION['email'];
 $prenom = $_SESSION['prenom'];
 $surname = $_SESSION['surname'];
@@ -18,12 +29,15 @@ if (isset($_GET['user'])){
 	$result = mysql_query("SELECT * FROM registration WHERE id='$id'");
 	$row = mysql_fetch_row($result);
 	$useremail = $row[2];
+	$userpre = $row[0];
+	$usersur = $row[1];
 	if ($email != $useremail){
 		$table = removePeriodsAndAt($email) . "guests";
 		$result = mysql_query("SELECT * FROM $table WHERE id='$id' 
 		AND status='true'");
 		$row = mysql_fetch_row($result);
-		if (!empty($row)) showprofile($useremail, $url);
+		if (!empty($row)) showprofile($userpre, $usersur, 
+			$useremail, $url);
 		else {
 			echo "You must be mutual guests to see
 			this profile";
@@ -93,7 +107,7 @@ if (isset($_GET['img'])){
 		}
 		if ($typeok){
 			list($w, $h) = getimagesize($path);
-			$max = 200;
+			$max = 175;
 			$nw = $w;
 			$nh = $h;
 
@@ -111,6 +125,34 @@ if (isset($_GET['img'])){
 			imagejpeg($tmp, $path);
 			imagedestroy($tmp);
 			imagedestroy($src);
+
+			if ($imagenum == 1){
+				$thumb = "imgs/$email/t.jpg";
+				copy($path, $thumb);
+				list($w, $h) = getimagesize($thumb);
+				$src = imagecreatefromjpeg($thumb);
+				$max = 100;
+				$tmp = imagecreatetruecolor($max, $max);
+				if ($w < $h){
+					imagecopyresampled($tmp, $src, 
+					0, 0, 0, $h - $w, $max, $max,
+					$w, $h);
+					imagejpeg($tmp, $thumb);
+				}
+				elseif ($h < $w){
+					imagecopyresampled($tmp, $src,
+					0, 0, $w - $h, 0, $max, $max,
+					$w, $h);
+					imagejpeg($tmp, $thumb);
+				}
+				else {
+					imagecopyresampled($tmp, $src,
+					0, 0, 0, 0, $max, $max, $w, $h);
+					imagejpeg($tmp, $thumb);
+				}
+				imagedestroy($tmp);
+				imagedestroy($src);
+			}
 		}
 	}
 }	
@@ -139,6 +181,7 @@ if (isset($_GET['guestdecline'])){
 	$result = mysql_query("DELETE FROM $myguests WHERE
 	id='$id'");
 }
-showprofile($email, $url);
+showprofile($prenom, $surname, $email, $url);
+}
 }
 ?>

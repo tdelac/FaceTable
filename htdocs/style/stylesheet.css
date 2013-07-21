@@ -1,4 +1,5 @@
 body {
+	min-width: 900px;
 	background-color: #000;
 	background-image: url("../imgs/FaceTableHeader.jpg");
 	background-repeat: no-repeat;
@@ -18,7 +19,7 @@ h1 {
 	border-bottom-width: thin;
 	border-bottom-style: solid;
 	border-bottom-color: #000000
-	margin-bottom: 0;
+	margin: 0;
 }
 h2 {
 	color: #000000;
@@ -26,97 +27,132 @@ h2 {
 h3 {
 	color: #BBBBBB;
 }
-table {
-	float: top;
-	margin-top: 0;
-	position: absolute;
-	top: 59px;
-	left: 15px;
-	cursor: hand; cursor: pointer;
-}
 a {
 	margin-top: 0px;
 	padding-top: 0px;
 	text-decoration: none;
 }
-
-form {
-	font-family: verdana, arial, sans-serif;
+a.header {
+	text-decoration: none;
+	color: #BBB;
 }
-
+a.header:hover {
+	color: #FFF;
+}
+p.form {
+	margin: 0px;
+	padding: 3px;
+}
+p.submit {
+	padding-left: 147px;
+	padding-top: 7px;
+	margin-top: 0px;
+	height: 25px;
+}
+p.incorrect {
+	color: #FF0000;
+}
+label {
+	font-family: arial, verdana, sans-serif;
+	float: left;
+	text-align: left;
+	display: block;
+	margin-right: 5px;
+	width: 140px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	padding-bottom: 0px;
+	padding-top: 0px;
+}
+input.normal {
+	margin: 0px;
+	padding: 0px;
+	height: 25px;
+	width: 200px;
+	border: 1px solid #999;
+	-webkit-box-shadow: 0px 0px 8px rgba(0,0,0,0.3);
+	-moz-box-shadow: 0px 0px 8px rgba(0,0,0,0.3);
+	box-shadow: 0px 0px 8px rgba(0,0,0,0.3);
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+}
+input.incorrect {
+	margin: 0px;
+	padding: 0px;
+	height: 25px;
+	width: 200px;
+	border: 1px solid #999;
+	-webkit-box-shadow: 0px 0px 8px rgba(0,0,0,0.3);
+	-moz-box-shadow: 0px 0px 8px rgba(0,0,0,0.3);
+	box-shadow: 0px 0px 8px rgba(0,0,0,0.3);
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	background-color: rgba(255, 0, 0, 0.7);
+}
+input.incorrect:active {
+	background-color: #FFF;
+}
+input.submit {
+	margin: 0px;
+	padding: 0px;
+	height: 25px;
+	width: 200px;
+	border: 1px solid #999;
+	-webkit-box-shadow: 0px 0px 8px rgba(0,0,0,0.3);
+	-moz-box-shadow: 0px 0px 8px rgba(0,0,0,0.3);
+	box-shadow: 0px 0px 8px rgba(0,0,0,0.3);
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+}
+input.submit:hover {
+	background-color: #FFF;
+	cursor: pointer;
+}
 #About {
-	width: 60px;
+	min-width: 60px;
+	padding-right: 10px;
 }
 
-#ServicesO {
-        width: 80px;
+#Services {
+        min-width: 80px;
+	padding-right: 10px;
 }
 
-#Menus {
-        width: 115px;
+#Phil {
+	min-width: 95px;
+	padding-right: 10px;
 }
 
 #Blog {
-       width: 50px;
+       min-width: 50px;
+       padding-right: 10px;
 }
 
-#PhotoA {
-       width: 110px;
+#Photos {
+       min-width: 65px;
+       padding-right: 10px;
 }
 
-#ContactU {
-       width: 60px;
+#Contact {
+       min-width: 60px;
+       padding-right: 10px;
 }
 
 #Connect {
-       width: 77px;
-}
-
-#blank {
-       width: 270px;
-       cursor: default;
+       min-width: 77px;
+       padding-right: 10px;
 }
 
 #login {
-       width: 77px;
-       position: absolute;
-       top: 43px;
-       left: 850px;
+	padding-left: 275px;
 }
 
 #welcome {
-	position: absolute;
-	top: 62px;
-	left: 780px;
-	font-family: verdana, arial, sans-serif;
-	font-size: 16px;
-	color: #BBBBBB;
+	padding-left: 250px;
 }
-
-#loginform {
-	background-color: #BBBBBB;
-	margin: 0px;
-	padding-top: 0px;
-	padding-bottom: 0px;
-	padding-left: 8px;
-	padding-right: 5px;
-	position: absolute;
-	top: 283px;
-	left: 15px;
-}
-
-#registerform {
-	background-color: #BBBBBB;
-	margin: 0px;
-	padding-top: 0px;
-	padding-bottom: 0px;
-	padding-left: 8px;
-	padding-right: 5px;
-	position: absolute;
-	top: 283px;
-	left: 360px;
-}
-
 #home {
 	width: 60px;
 }
@@ -126,25 +162,48 @@ form {
 #find {
 	width: 180px;
 }
-p {
-	color: #BBBBBB
-}
-p:hover {
-	letter-spacing: 5px;
-	color: #FFFFFF
-}
 p.profile {
 	color: #BBBBBB;
 }
+p.brochure1 {
+	color: #000;
+	font-family: arial, verdana, sans-serif;
+	text-align: justify;
+}
+span.brochuretext {
+	color: #000;
+	font-family: arial, verdana, sans-serif;
+	font-size: 14px;
+}
 div.notheader {
-	position: absolute;
-	top: 150px;
-	left: 10px;
-	background-color: rgba(200, 200, 200, .7);
-	clear: both;
-	padding-left: 5px;
+	position: relative;
+	top: 60px;
+	left: 5px;
+	background-color: rgba(255, 255, 255, .9);
+	padding-left: 25px;
 	padding-right: 25px;
-	width: 600px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	width: 500px;
+	min-height: 150px;
+}
+div.header {
+	margin: 0px;
+	padding: 0px;
+	position: relative;
+	top: -25px;
+	left: 10px;
+}
+div.login {
+	padding: 10px;
+	margin: 0px;
+}
+div.register {
+	padding: 10px;
+	margin: 0px;
+}
+div.clear {
+	clear: both;
 }
 div.imgs {
 	width: 200px;
@@ -165,4 +224,13 @@ img.sidebar {
 }
 span.parens {
 	font-size: 14px;
+}
+ul {
+	padding-left: 15px;
+}
+li {
+	padding: 0px;
+	font-family: arial, verdana, sans-serif;
+	font-size: 14px;
+	font-style: italic;
 }

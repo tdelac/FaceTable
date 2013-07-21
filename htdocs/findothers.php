@@ -1,7 +1,13 @@
 <?php
-include_once 'header.php';
 require_once 'functions.php';
 require_once 'login.php';
+
+session_start();
+
+$h1 = "SEARCH&nbsp&nbsp";
+$tabs = array("HOME", "PROFILE", "BLOG", "FIND OTHERS");
+$links = array("index.php", "profile.php", "blog.php", "findothers.php");
+head($h1, $tabs, $links);
 
 if (!isset($_SESSION['prenom'])) die ("Please login to continue");
 
@@ -48,7 +54,7 @@ if (isset($_POST['search'])){
 				$value2 = "sendguestreq";
 			}
 			echo <<<_END
-<a href='profile.php?user=$id'><img src='imgs/$useremail/1.jpg'></a> 
+<a href='profile.php?user=$id'><img src='imgs/$useremail/t.jpg'></a> 
 <div class='gueststatus'>
 <form action='findothers.php' method='post'>
 <input type='hidden' name='$value2' value='$id' />
@@ -59,7 +65,7 @@ _END;
 		}
 		else {
 			echo <<<_END
-<a href='profile.php'><img src='imgs/$email/1.jpg'></a>
+<a href='profile.php'><img src='imgs/$email/t.jpg'></a>
 _END;
 		}
 	}

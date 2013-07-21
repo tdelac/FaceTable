@@ -1,7 +1,13 @@
 <?php
-include_once 'blogheader.php';
 include_once 'login.php';
 include_once 'functions.php';
+
+session_start();
+
+$h1 = "BLOG&nbsp&nbsp";
+$tabs = array("HOME", "PROFILE", "BLOG", "FIND OTHERS");
+$links = array("index.php", "profile.php", "bloghome.php", "findothers.php");
+head($h1, $tabs, $links);
 
 if (!isset($_SESSION['prenom'])) die ("please login to view this page");
 
@@ -31,8 +37,11 @@ else {
 }
 for ($i = 0; $i < mysql_num_rows($result); $i++){
 	$row = mysql_fetch_row($result);
+	$title = $row[0];
+	$author = $row[2];
 	echo "<p class='profile'><a class='plainbody' 
-	href='blog.php'>$row[0]</a> - $row[2] ($row[4])
+	href='blog.php?title=$title&author=$author'>$row[0]</a> 
+	- $row[2] ($row[4])
 	</p>";
 }
 echo "</div>";
