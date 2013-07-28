@@ -4,10 +4,11 @@ require_once 'login.php';
 
 session_start();
 
-$h1 = "SEARCH&nbsp&nbsp";
-$tabs = array("HOME", "PROFILE", "BLOG", "FIND OTHERS");
-$links = array("index.php", "profile.php", "blog.php", "findothers.php");
-head($h1, $tabs, $links);
+$h1 = "Search&nbsp&nbsp";
+$tabs = array("Home", "Feed", "Profile", "Blog", "Find Others", "Logout");
+$links = array("index.php", "feed.php", "profile.php", "bloghome.php", "findothers.php", "logout.php");
+$ids = array("home", "feed", "profile", "blog", "find", "login");
+head($h1, $tabs, $links, $ids, "loggedin");
 
 if (!isset($_SESSION['prenom'])) die ("Please login to continue");
 
@@ -18,10 +19,10 @@ if (!$db_server) die ("Could not connect to mysql server");
 mysql_select_db('users', $db_server) or die ("unable to open database");
 
 echo <<<_END
-<div class='notheader'>
+<div class='body'>
 <form action='findothers.php' method='post'>
-<input type='text' name='search' maxlength='35' />
-<input type='submit' value='SEARCH' />
+<input class='normal2' type='text' name='search' maxlength='35' />
+<input class='submit2' type='submit' value='Find' />
 </form>
 _END;
 
@@ -54,18 +55,29 @@ if (isset($_POST['search'])){
 				$value2 = "sendguestreq";
 			}
 			echo <<<_END
-<a href='profile.php?user=$id'><img src='imgs/$useremail/t.jpg'></a> 
+<div class='bodyelement2'>
+<div class='findimg'><a href='profile.php?user=$id'>
+<img src='imgs/$useremail/t.jpg'></a></div> 
 <div class='gueststatus'>
+<h2>$prenom $surname</h2>
 <form action='findothers.php' method='post'>
 <input type='hidden' name='$value2' value='$id' />
-<input type='submit' value='$value1' />
+<input class='submit' type='submit' value='$value1' />
 </form>
+</div>
 </div>
 _END;
 		}
 		else {
 			echo <<<_END
+<div class='bodyelement2'>
+<div class='findimg'>
 <a href='profile.php'><img src='imgs/$email/t.jpg'></a>
+</div>
+<div class='gueststatus'>
+<h2>You could just click 'profile'...</h2>
+</div>
+</div>
 _END;
 		}
 	}

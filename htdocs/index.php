@@ -2,8 +2,7 @@
 session_start();
 require_once 'functions.php';
 if (isset($_SESSION['prenom'])){
-	$name = $_SESSION['prenom'];
-	$login = "Welcome, $name!";
+	$login = "Logout";
 	$loginlink = "logout.php";
 	$loginid = "welcome";
 }
@@ -16,11 +15,11 @@ $h1 = "FaceTable&nbsp&nbsp&nbsp";
 $tabs = array("About", "Services", "Philosophy", "Blog", "Photos", 
 "Connect", "Contact", "", $login);
 $links = array("index.php?tab=about", "index.php?tab=services",
-"index.php?tab=phil", "bloghome.php", "photos.php", "profile.php", 
+"index.php?tab=phil", "bloghome.php", "photos.php", "feed.php", 
 "index.php?tab=contact", "index.php", $loginlink);
 $ids = array("About", "Services", "Phil", "Blog", "Photos", "Connect", 
 "Contact", "blank", $loginid);
-head($h1, $tabs, $links, $ids);
+head($h1, $tabs, $links, $ids, "home");
 
 if (isset($_GET['tab'])){
 	if ($_GET['tab'] == 'about'){
@@ -99,23 +98,22 @@ and household schedule
 </br>
 </br>
 <b>Shopping and kitchen set-up:</b><span class='brochuretext'>
-We can shop for and deliver the menu ingredients, as well as provide 
-assistance in preparing ingredients and cookware so that you are
-ready to begin
+We can shop for and deliver the menu ingredients, as well as assist 
+with ingredient and cookware preparation
 </span>
 </br>
 </br>
 <b>Instruction and help with dinner courses:</b><span class='brochuretext'>
-We can offer cooking instructions and tips, as well as supervisory 
-help with course preparation
+We offer cooking instructions and tips, as well as supervisory 
+help where needed
 </span>
 </br>
 </br>
 <b>Idea sharing... Social networking and blogging:</b><span class='brochuretext'>
-We offer blog space for members, who wish to share bold ideas about food
-, politics, world events and more, as well as tasteful commentary about
- dinner parties attended. You may elect to become a member of a growing
- community of dinner party hosts and attendees by joining our network
+You may elect to become a member of a growing community of dinner 
+party hosts and attendees by joining our (free) network. We offer blog space for 
+members, who wish to share bold ideas about food, politics, world events, 
+and more, or simply continue the dinner table conversations online.
 </span>
 </br>
 </br>
@@ -149,41 +147,41 @@ _END;
 <div class='notheader'>
 <p class='brochure1'>
 <b>Who we are</b></br></br><span class='brochuretext'>
-A few years ago, our son came home from high school and recounted a 
-world history lesson he had attended that day. The lesson starts with 
-a puzzle: why has the political climate in the United States become so 
-polarized? One theory of politics suggests that political agendas in 
-two-party systems converge over time as both parties compete for votes 
-at the center. Although many seemingly sophisticated theories could 
-well be advanced to explain how the contrary result has been obtained, 
-our son's teacher had a sensible idea: a few decades back, Washington 
-had been another place, where congressmen had moved their families to 
-reside in the nation's capitol, their workplace. Families then settled 
-into Washington life and socialize, sharing meals and drink with colleagues 
-and the families of colleagues: Republicans and Democrats mingled during 
-meals. Today, by contrast, Washington has developed a community of 
-commuter politicians, severing the crucial link between work and social 
-life, so important to the sharing of ideas and perspectives.
+We began developing <b>FaceTable</b> by exploring a puzzle: why has the 
+political dialogue in Washington become so polarized? After all, simple 
+logic would suggest that political agendas in a two-party system 
+should converge over time as both parties compete for votes at the 
+center. We figured the answer might not be all that complicated. Think: 
+a few decades back, Washington was another place, where congressmen 
+had moved their families to reside in the nation's capitol, their 
+workplace. They then settled into Washinton life and socialized, sharing 
+meals and drink with colleagues and the families of colleagues: 
+Republicans and Democrats mingled during meals. Today, by contrast, 
+Washington has developed a community of commuter politicians, severing 
+a crucial link between work and social life, important to the diffusion 
+of ideas and initiatives. Out wager: that this lifestyle change may 
+have contributed to a Washinton community less willing and able to 
+find common ground.
 </br>
 </br>
-We at <b>FaceTable</b> seek to facilitate meal and idea sharing, 
+<b>FaceTable</b> seeks to facilitate meal and idea sharing, 
 whether among family at home, or between friends, colleagues and 
 acquaintances. As a family that most typically votes for the democratic 
-party, we would like to pitch our commitment to the philosophy of 
+party, we would like to emphasize our commitment to the philosophy of 
 <b>FaceTable</b> by citing a quote from Ronald Reagan's farewell speech 
 in 1988: <i>All great change in America begins at the dinner table.</i>
-Maybe Washington will take note.
 </br>
 </br>
-<b>FaceTable</b> is a family effort, created by Heidi Hiebert. She 
+<b>FaceTable</b> is a family collaborative effort, created by Heidi Hiebert. She 
 holds a doctorate in international relations from American University, 
 a Master's in international economics from the Graduate Institute 
 of International Studies in Geneva, Switzerland and a Bachelor's in 
 economics from the University of California at Los Angeles. She is 
-supported by her husband, Olivier Delacour, an MIT-trained architect, 
-son Thomas, a student of computer science and math at the University 
-of Pennsylvania and daughter Tasha, a sophomore at Walt Whitman High 
-School.
+supported by her husband, Olivier Delacour, an MIT-educated architect
+and engineer (company and concept design), son Thomas, a student of 
+computer science and math at the University of Pennsylvania (website 
+engineering and design) and daughter Tasha, a sophomore at Walt Whitman High 
+School (our prized source of attitude).
 </span>
 </p>
 </div>

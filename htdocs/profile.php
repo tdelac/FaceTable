@@ -39,8 +39,25 @@ if (isset($_GET['user'])){
 		if (!empty($row)) showprofile($userpre, $usersur, 
 			$useremail, $url);
 		else {
-			echo "You must be mutual guests to see
-			this profile";
+			$h1 = "Oops!";
+			$tabs = array("Home", "Profile", "Blog", "Find Others");
+			$links = array("index.php", "profile.php", 
+			"bloghome.php", "findothers.php");
+			$ids = array("home", "profile", "blog", "find");
+			head($h1, $tabs, $links, $ids, "loggedin");
+			echo <<<_END
+<div class='body'>
+<div class='findimg'>
+<img src=imgs/$useremail/t.jpg></div>
+<div class='gueststatus'>
+<h2>$userpre $usersur</h2>
+<form action='findothers.php' method='post'>
+<input type='hidden' name='sendguestreq' value='$id'>
+<input class='submit' type='submit' value='Send Guest Request'>
+</form>
+</div>
+</div>
+_END;
 		}
 	}
 }
@@ -61,10 +78,10 @@ if (isset($_POST['newtitle'])){
 	$newblog = sanatize('newtitle');
 	$newtable = removePeriodsAndAt($email) . removeSpaces($newblog);
 	$userblogs = removePeriodsAndAt($email) . "blogs";
-	$time = time();
+	$time = time() - 18960;
 	mysql_query("CREATE TABLE $newtable (posts VARCHAR(65000) 
-	NOT NULL, id INT UNSIGNED NOT NULL AUTO_INCREMENT, PRIMARY KEY
-	(id))");
+	NOT NULL, id INT UNSIGNED NOT NULL AUTO_INCREMENT, time 
+	INT UNSIGNED NOT NULL, PRIMARY KEY(id))");
 	mysql_query("INSERT INTO $userblogs(time, title)
 	VALUES('$time', '$newblog')");
 	mysql_query("INSERT INTO allblogs(title, author, followerscount,
@@ -141,7 +158,7 @@ if (isset($_GET['img'])){
 				}
 				elseif ($h < $w){
 					imagecopyresampled($tmp, $src,
-					0, 0, $w - $h, 0, $max, $max,
+					0, 0, 0, 0, $max, $max,
 					$w, $h);
 					imagejpeg($tmp, $thumb);
 				}

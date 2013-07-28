@@ -9,7 +9,7 @@ $links = array("index.php?tab=about", "index.php?tab=services",
 "index.php?tab=contact", "index.php");
 $ids = array("About", "Services", "Phil", "Blog", "Photos", "Connect", 
 "Contact", "login");
-head($h1, $tabs, $links, $ids);
+head($h1, $tabs, $links, $ids, "home");
 $db_server = mysql_connect($db_hostname, $db_username, $db_password);
 
 if (!$db_server) die("unable to connect to MySql: " . mysql_error());
@@ -31,6 +31,7 @@ if (isset($_POST['logEmail']) &&
 	if (!$result) die("Database access failed: " . mysql_error());
 	elseif (mysql_num_rows($result) == 1){
 		$row = mysql_fetch_row($result);
+		if ($row[6] == 'false') die("need confirm address!");
 		$token = md5("$salt1$logPass$salt2");
 
 		if ($token == $row[3]){
@@ -88,8 +89,8 @@ elseif (isset($_POST['regPrenom']) &&
 		$result = mysql_query("SELECT * FROM registration WHERE 
 		email='$email'");
 		$query = "INSERT INTO registration (prenom, surname, 
-		email, password, zipcode) VALUES ('$prenom', '$surname', 
-		'$email', '$pass', '$zip')";
+		email, password, zipcode, bool) VALUES ('$prenom', '$surname', 
+		'$email', '$pass', '$zip', 'false')";
 		$result = mysql_query($query);
 		if (!$result)
 			die("INSERT FAILED: $query<br />" .
@@ -117,18 +118,44 @@ elseif (isset($_POST['regPrenom']) &&
 		copy("imgs/tmp/1.jpg", "imgs/$email/5.jpg");
 		copy("imgs/tmp/1.jpg", "imgs/$email/6.jpg");
 		copy("imgs/tmp/1.jpg", "imgs/$email/7.jpg");
+		copy("imgs/tmp/t.jpg", "imgs/$email/t.jpg");
 
-		echo <<<_END
-<div class='notheader'>
-<p class='brochure1'><span class='brochuretext'>Welcome, $prenom! 
-Your registration was successful. Once you log in, you will have full 
-access to <b>FaceTable</b> blogging and social networking services. Access 
-your profile and connect with other users by clicking the <i>Connect</i> 
-tab. Or head directly to our blog homepage by clicking the <i>Blog</i> 
-tab. If you have any trouble with your account, contact us directly at 
-FaceTable@verizon.net</p></span>
-_END;
+		header("Location: registerfinal.php?email=$email");
+	}
+}
+elseif (isset($_POST['refemail'])){
+	$refemail = sanatize('refemail');
+	$useremail = sanatize('useremail');
+	$result = mysql_query("SELECT * FROM registration WHERE email=
+	'$refemail'");
+	if (mysql_num_rows($result) != 0){
+		$result = mysql_query("UPDATE registration SET bool=
+		'true' WHERE email='$useremail'");
+		if (!$result) die(mysql_error());
 		loginform("normal");
+	}
+	else {
+		$blogtable = removePeriodsAndAt($useremail) . "blogs";
+		$followtable = removePeriodsAndAt($useremail) . "following";
+		$guesttable = removePeriodsAndAt($useremail) . "guests";
+		mysql_query("DROP TABLE $blogtable");
+		mysql_query("DROP TABLE $followtable");
+		mysql_query("DROP TABLE $guesttable");
+		mysql_query("DELETE FROM registration WHERE email='$useremail'");
+		mysql_query("DELETE FROM profiles WHERE email='$useremail'");
+		unlink("imgs/$useremail/1.jpg");
+		unlink("imgs/$useremail/2.jpg");
+		unlink("imgs/$useremail/3.jpg");
+		unlink("imgs/$useremail/4.jpg");
+		unlink("imgs/$useremail/5.jpg");	
+		unlink("imgs/$useremail/6.jpg");
+		unlink("imgs/$useremail/7.jpg");
+		unlink("imgs/$useremail/t.jpg");
+		rmdir("imgs/$useremail");
+		echo "<div class='notheader'>";
+		echo "<p class='incorrect'>The email you provided does 
+		not exist on our system.</p>";
+		registerform("normal");
 		echo "</div>";
 	}
 }

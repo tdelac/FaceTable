@@ -5,9 +5,10 @@ require_once 'functions.php';
 session_start();
 
 $h1 = "BLOG&nbsp&nbsp";
-$tabs = array("HOME", "PROFILE", "BLOG", "FIND OTHERS");
-$links = array("index.php", "profile.php", "bloghome.php", "findothers.php");
-head($h1, $tabs, $links);
+$tabs = array("Home", "Feed", "Profile", "Blog", "Find Others", "Logout");
+$links = array("index.php", "feed.php", "profile.php", "bloghome.php", "findothers.php", "logout.php");
+$ids = array("home", "feed", "profile", "blog", "find", "login");
+head($h1, $tabs, $links, $ids, "loggedin");
 
 if (!isset($_SESSION['prenom'])) die ("please login to view this page");
 
@@ -32,7 +33,32 @@ if (isset($_GET['title']) && isset($_GET['author'])){
 
 	if (isset($_POST['newpost'])){
 		$newpost = sanatize('newpost');
-		mysql_query("INSERT INTO $table(posts) VALUES('$newpost')");
+		$time = time() - 18960;
+		mysql_query("INSERT INTO $table(posts, time) 
+		VALUES('$newpost', '$time')");
+		$blogtable = removePeriodsAndAt($email) . "blogs";
+		$result = mysql_query("SELECT * FROM $blogtable WHERE 
+		title='$title'");
+		$row = mysql_fetch_row($result);
+		$followerarray = explode(",", $row[3]);
+		foreach ($followerarray as $follower){
+			$followingtable = removePeriodsAndAt($follower) . 
+			"following";
+			$result = mysql_query("UPDATE $followingtable SET 
+			bool='false' WHERE title='$title' AND author='$author'");
+		}
+	}
+	if (isset($_GET['bold'])){
+		$id = $_GET['bold'];
+		$result = mysql_query("SELECT * FROM registration WHERE 
+		id='$id'");
+		if (!$result) die(mysql_error());
+		$row = mysql_fetch_row($result);
+		$useremail = $row[2];
+		$followingtable = removePeriodsAndAt($useremail) . "following";
+		$result = mysql_query("UPDATE $followingtable SET bool='true' 
+		WHERE title='$title' AND author='$author'");
+		if (!$result) die("died" . mysql_error());
 	}
 	if (isset($_POST['follow'])){
 		$useremail = $_SESSION['email'];
@@ -44,12 +70,19 @@ if (isset($_GET['title']) && isset($_GET['author'])){
 		$row = mysql_fetch_row($result);
 		$followers = $row[3];
 		$followers .= ",$useremail";
-		$result = mysql_query("UPDATE TABLE $blogstable SET
+		$result = mysql_query("UPDATE $blogstable SET
 		followers='$followers' WHERE title='$title'");
 		if (!$result) die(mysql_error());
 		$result = mysql_query("INSERT INTO $followingtable(
 		author, title) VALUES('$author', '$title')");
 		if (!$result) die(mysql_error());
+		$result = mysql_query("SELECT * FROM $allblogs WHERE 
+		title='$title' AND author='$author'");
+		$row = mysql_fetch_row($result);
+		$count = $row[3];
+		$count++;
+		$result = mysql_query("UPDATE $allblogs SET followerscount=
+		'$count' WHERE title='$title' AND author='$author'");
 	}
 	if (isset($_POST['unfollow'])){
 		$useremail = $_SESSION['email'];
@@ -89,24 +122,26 @@ if (isset($_GET['title']) && isset($_GET['author'])){
 		WHERE title='$title'");
 		mysql_query("UPDATE allblogs SET title='$newtitle' 
 		WHERE title='$title' AND author='$author'");
+		header("location: blog.php?title=$newtitle&author=$_author");
 	}
 	if (isset($_POST['edittitle'])){
 		echo <<<_END
-<div class='notheader'>
+<div class='body'>
 <form action='$url' method='post'>
-Edit your title <input type='text' name='newtitle' value='$title' />
-<input type='submit' value='UPDATE' />
+<input class='normal' type='text' name='newtitle' value='$title' />
+<input class='submit' type='submit' value='Update' />
 </form>
 </div>
 _END;
 	}
 	elseif (isset($_POST['post'])){
 		echo <<<_END
-<div class='notheader'>
+<div class='bodyblog'>
 <form action='$url' method='post'>
-New post <textarea name='newpost' cols='100' rows='20' wrap='hard'>
+<textarea name='newpost' cols='85' rows='10' wrap='hard'>
+My new post
 </textarea>
-<input type='submit' value='POST' />
+<input class='submit' type='submit' value='POST' />
 </form>
 </div>
 _END;
@@ -117,13 +152,13 @@ _END;
 		$row = mysql_fetch_row($result);
 		$text = $row[0];
 		echo <<<_END
-<div class='notheader'>
+<div class='bodyblog'>
 <form action='$url' method='post'>
-Edit your post <textarea name='updated' cols='100' rows='20' wrap='hard'>
+<textarea name='updated' cols='83' rows='10' wrap='hard'>
 $text
 </textarea>
 <input type='hidden' name='editid' value=$id />
-<input type='submit' value='UPDATE' />
+<input class='submit' type='submit' value='UPDATE' />
 </form>
 </div>
 _END;
